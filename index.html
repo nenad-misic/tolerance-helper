@@ -1,0 +1,72 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="bootstrap.min.css">
+        <link rel="icon" href="favicon.ico" type="image/x-icon">
+        <title>LearnDash Tolerance Helper</title>
+    </head>
+    <body>
+        <div class="container-fluid mt-5">
+            <div class="row col-lg-4 col-md-6 col-sm-10 offset-lg-4 offset-md-3 offset-sm-1">
+                <div class="row text-center">
+                    <div>
+                        <h2>LearnDash Tolerance Helper</h2>
+                    </div>  
+                </div>
+                <div class="row mt-5 mb-5">
+                    <form>
+                        <fieldset>
+                          <div class="form-group">
+                            <label for="correct" class="form-label mt-4">Correct answer: </label>
+                            <input id="correct" class="form-control" type="number" placeholder="Correct answer">
+                          </div>
+                          <div class="form-group">
+                            <label for="tolerance" class="form-label mt-4">Tolerance: </label>
+                            <input id="tolerance" class="form-control" type="number" placeholder="Tolerance">
+                          </div>
+                        </fieldset>
+                      </form>
+                </div>
+                <div class="row mt-5 ">
+                    <div>
+                        <textarea class="form-control" id="output" rows="6"></textarea>
+                    </div>  
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+
+<script>
+
+    var countDecimals = function (value) { 
+        if ((value % 1) != 0) 
+            return value.toString().split(".")[1].length;  
+        return 0;
+    };
+
+    var correct = 0;
+    var tolerance = 0;
+
+    var render_output = () => {
+        let correct_decimals = countDecimals(correct);
+        let tolerance_decimals = countDecimals(tolerance);
+        let max_decimals = Math.max(correct_decimals, tolerance_decimals);
+        let step = 1/Math.pow(10, max_decimals);
+        
+        correct_values = []
+        for (let i = -tolerance; i <= tolerance; i += step) {
+            correct_values.push(
+                Math.round(((+correct) + (+i)) * Math.pow(10, max_decimals)) / Math.pow(10, max_decimals) 
+            );
+        }
+        document.getElementById('output').value = `{${correct_values.map(e => `[${e}]`)}]}`
+    }
+    document.getElementById('correct').addEventListener('input', (ev) => {
+        correct = ev.target.value;
+        render_output();
+    });
+    document.getElementById('tolerance').addEventListener('input', (ev) => {
+        tolerance = ev.target.value;
+        render_output();
+    });
+</script>
