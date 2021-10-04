@@ -39,10 +39,16 @@
 <script>
 
     var countDecimals = function (value) { 
-        if (value.indexOf('.') != -1)
-            return value.split(".")[1].length;  
+        if ((value % 1) != 0) 
+            return value.toString().split(".")[1].length;  
         return 0;
     };
+
+    var countDecimalsForcefully = function (value) {
+        if (value.indexOf('.') != -1) 
+            return value.split(".")[1].length;  
+        return 0;
+    }
 
     var correct = '0';
     var tolerance = '0';
@@ -57,6 +63,12 @@
         for (let i = -tolerance; i <= tolerance; i += step) {
             let val = Math.round(((+correct) + (+i)) * Math.pow(10, max_decimals)) / Math.pow(10, max_decimals);
             correct_values.push(val.toString());
+            if (Number.isInteger(val)) {
+                let max_decimals_forced = Math.max(countDecimalsForcefully(correct), countDecimalsForcefully(tolerance));
+                if (correct_values.indexOf(val.toFixed(max_decimals_forced)) === -1){
+                    correct_values.push(val.toFixed(max_decimals_forced))
+                }
+            }
             if (correct_values.indexOf(val.toFixed(max_decimals)) === -1){
                 correct_values.push(val.toFixed(max_decimals))
             }
