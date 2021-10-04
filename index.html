@@ -55,9 +55,11 @@
         
         correct_values = []
         for (let i = -tolerance; i <= tolerance; i += step) {
-            correct_values.push(
-                Math.round(((+correct) + (+i)) * Math.pow(10, max_decimals)) / Math.pow(10, max_decimals) 
-            );
+            let val = Math.round(((+correct) + (+i)) * Math.pow(10, max_decimals)) / Math.pow(10, max_decimals);
+            correct_values.push(val.toString());
+            if (correct_values.indexOf(val.toFixed(max_decimals)) === -1){
+                correct_values.push(val.toFixed(max_decimals))
+            }
         }
         document.getElementById('output').value = `{${correct_values.map(e => `[${e}]`).join('')}}`
     }
