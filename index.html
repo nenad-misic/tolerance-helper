@@ -59,7 +59,7 @@
                 Math.round(((+correct) + (+i)) * Math.pow(10, max_decimals)) / Math.pow(10, max_decimals) 
             );
         }
-        document.getElementById('output').value = `{${correct_values.map(e => `[${e}]`)}]}`
+        document.getElementById('output').value = `{${correct_values.map(e => `[${e}]`).join('')}}`
     }
     document.getElementById('correct').addEventListener('input', (ev) => {
         correct = ev.target.value;
